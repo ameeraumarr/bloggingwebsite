@@ -1,0 +1,75 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  lint:
+    name: Lint HTML and CSS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install -g htmlhint stylelint stylelint-config-standard
+
+      - name: Create htmlhint config
+        run: |
+          echo '{
+            "tagname-lowercase": true,
+            "attr-lowercase": true,
+            "alt-require": true,
+            "id-unique": true,
+            "tag-pair": true
+          }' > .htmlhintrc
+
+      - name: Run HTMLHint
+        run: htmlhint "**/*.html"
+
+      - name: Create stylelint config
+        run: |
+          echo '{
+            "extends": "stylelint-config-standard",
+            "rules": {
+              "declaration-block-no-duplicate-properties": true,
+              "no-duplicate-selectors": true,
+              "property-case": "lower",
+              "value-keyword-case": "lower",
+              "selector-type-case": "lower",
+              "block-no-empty": true
+            }
+          }' > .stylelintrc.json
+
+      - name: Run Stylelint
+        run: stylelint "**/*.css"
+
+  build:
+    name: Build Static Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install -g parcel
+          npm install
+
+      - name: Build site using Parcel
+        run: parcel build src/index.html --dist-dir build
