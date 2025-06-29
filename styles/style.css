@@ -1,17 +1,17 @@
 /* Blog styling */
 body {
   font-family: Arial, sans-serif;
-   background-color: #fff;
+  background-color: #fff;
   color: #f36;
 }
 
 header {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 20px;
 }
 
 h1 {
-  color: #ff3366;
+  color: #f36;
 }
 
 nav ul {
