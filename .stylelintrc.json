@@ -6,6 +6,8 @@
     "value-keyword-case": "lower",
     "selector-type-case": "lower",
     "block-no-empty": true,
+    "property-no-unknown": true,
+    "comment-empty-line-before": null,
     "color-hex-length": "short"
   }
 }
